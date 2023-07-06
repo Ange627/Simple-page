@@ -1,18 +1,18 @@
-name: phpstan-analysis
-run-name: ${{ github.actor }} is running phpstan
-on: [push]
-jobs:
- tests:
-    runs-on: ubuntu-latest      
-    steps:
-        - uses: actions/checkout@v3
-        - name: Setup PHP
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: 8.2.4
-        - uses: php-actions/composer@v6
-        - name: test  phpstan
-          run:  php ./vendor/bin/phpstan analyse src public
+  name: phpstan-analysis
+  run-name: ${{ github.actor }} is running phpstan
+  on: [push]
+  jobs:
+  tests:
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v3
+          - name: Setup PHP
+            uses: shivammathur/setup-php@v2
+            with:
+              php-version: 8.2.4
+          - uses: php-actions/composer@v6
+          - name: test  phpstan
+            run:  php ./vendor/bin/phpstan analyse src public
   build:
     needs: tests
     runs-on: ubuntu-latest  
