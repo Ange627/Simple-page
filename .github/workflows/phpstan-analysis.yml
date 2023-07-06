@@ -1,4 +1,4 @@
-```name: phpstan-analysis
+name: phpstan-analysis
 run-name: ${{ github.actor }} is running phpstan
 on: [push]
 jobs:
@@ -38,4 +38,4 @@ jobs:
     needs: build
     runs-on: ubuntu-latest      
     steps:
-      - run: echo "Deploy project"```
+      - run: echo "Deploy project"
