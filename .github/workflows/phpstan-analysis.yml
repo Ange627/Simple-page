@@ -1,15 +1,41 @@
-name: CI
-
+```name: phpstan-analysis
+run-name: ${{ github.actor }} is running phpstan
 on: [push]
-
 jobs:
-  build-test:
-    runs-on: ubuntu-latest
-
+  tests:
+    runs-on: ubuntu-latest      
     steps:
-    - uses: actions/checkout@v3
-    - uses: php-actions/composer@v6 
-    - uses: php-actions/phpstan@v3
-      with:
-        path: src/
+        - uses: actions/checkout@v3
+        - name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+            php-version: 8.1
+        - uses: php-actions/composer@v6
+        - name: test  phpstan
+          run:  php ./vendor/bin/phpstan analyse php
+  build:
+    needs: tests
+    runs-on: ubuntu-latest  
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/test
+          labels: test
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest      
+    steps:
+      - run: echo "Deploy project"```
